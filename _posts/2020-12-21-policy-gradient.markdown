@@ -39,4 +39,3 @@ The downside is that we need a lot of samples to deal with the variance. How to 
 
 https://towardsdatascience.com/policy-gradients-in-a-nutshell-8b72f9743c5d
 
-{% bibliography --cited %}
