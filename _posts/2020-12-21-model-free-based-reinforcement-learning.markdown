@@ -3,15 +3,16 @@ layout: post
 title: "Model free vs Model-based Reinforcement Learning"
 categories: reinforcement_learning
 ---
+{% include math.html %}
 
 There are many different reinforcement learning (RL) algorithms. One of the ways you can categorize RL algorithms is whether they use a model or not. You can think of a model as understanding of how the system changes when you perform an action. For example, suppose you are picking up an object from one place and drop it in another place. You understand the physics and can guess where your hand will be when you moved it right. That understading of the state change is equivalent to "model" in reinforcement learning.
 
 
-Going back to the markov diagram, we can say the probability of seeing a particular rollout is ![](https://latex.codecogs.com/svg.latex?p(s_1)\prod^T*{t=1}\pi*\theta(a_t%7Cs_t)p(s_{t+1}%7Cs_t,a_t)). Here the model is ![](https://latex.codecogs.com/svg.latex?p(s_{t+1}%7Cs_t,a_t)), transition probability distribution.
+Going back to the markov diagram, we can say the probability of seeing a particular rollout is $$p(s_1)\prod^T*{t=1}\pi*\theta(a_t%7Cs_t)p(s_{t+1}%7Cs_t,a_t)$$. Here the model is $$p(s_{t+1}%7Cs_t,a_t)$$, transition probability distribution.
 
 ### Model-free
 
-In the model-free approach, we do not try to learn ![](https://latex.codecogs.com/svg.latex?p(s_{t+1}%7Cs_t,a_t)); we just watch the states change during the sampling phase. ![](https://latex.codecogs.com/svg.latex?\tau) is just given to us.
+In the model-free approach, we do not try to learn $$p(s_{t+1}%7Cs_t,a_t)$$; we just watch the states change during the sampling phase. $$\tau$$ is just given to us.
 
 ### Model-based
 
