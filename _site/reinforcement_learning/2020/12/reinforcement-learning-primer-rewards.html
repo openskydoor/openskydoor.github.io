@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Reinforcement Learning Rewards-based Algorithms - Primer | Skylar Lee</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Reinforcement Learning Rewards-based Algorithms - Primer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Just hanging here." />
+<meta property="og:description" content="Just hanging here." />
+<link rel="canonical" href="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html" />
+<meta property="og:url" content="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html" />
+<meta property="og:site_name" content="Skylar Lee" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-20T00:00:00-08:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reinforcement Learning Rewards-based Algorithms - Primer","dateModified":"2020-12-20T00:00:00-08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html"},"description":"Just hanging here.","url":"http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html","datePublished":"2020-12-20T00:00:00-08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Skylar Lee" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Skylar Lee</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Reinforcement Learning Rewards-based Algorithms - Primer</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-12-20T00:00:00-08:00" itemprop="datePublished">Dec 20, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<p>Reinforcement learning (RL) helps discover how agents ought to take actions (policy) in an environment (transition operator) in order to maximize the notion of cumulative reward. In this post, I’m going to discuss how we can define this problem more concretely with a reward function and the different objective functions we can optimize.</p>
+
+<p>// say some example
+As a refresher, we</p>
+
+<p>state, action, policy, reward</p>
+
+<p>We learned that we can use Markov decision process (MDP) to describe a reinforcement learning problem.</p>
+
+<p>// diagram</p>
+
+<p>where</p>
+
+\[S: \text{state space} \\
+A: \text{action space} \\
+O: \text{observation space} \\
+\epsilon: \text{emission probability } (p(s_t|o_t)) \\
+T: \text{transition operator } (p(s_{t+1}|s_{t},a_{t})) \\
+r: \text{reward function } (r(s,a))\]
+
+<h2 id="training-cycle">Training Cycle</h2>
+<p>Let’s call the parameters of the policy model \(\theta\), and \(\pi_{\theta}\) represents the policy with the parameters \(\theta\). Let’s suppose we took actions according to the policy \(\pi_{\theta}\) (rollout), and we got a sequence of states and action pairs, \(s_0, a_0, s_1, a_1, ...\). The goal is to find \(\theta\) such as that we maximize the expected rewards, i.e.,
+\(\mathop{\operatorname{arg\,max_\theta}} E_{\tau\sim p_\theta(\tau)} \sum_t r(s_t, a_t)\), where \(\tau\) is the rollout \(s_1,a_1,s_2,a_2,...\) with a policy \(\pi\).</p>
+
+<p>In supervised learning, we have inputs, labels, and model prediction, and the goal is to come up with the model that generates predictions that are as close to labels as possible, without losing the ability to generalize.
+In reinforcement learning, your policy (\(\pi\)), which action to take) and model (state transition, \(p(s_{t+1}|s_t,a_t)\)) is responsible for generating the future states that it predicts on. Therefore, we can’t simply do a single pass training (there is ample research going on in training reinforcement learning this way, called offline reinforcement learning) and we have a cycle:</p>
+
+<ol>
+  <li>generate samples \((s,a)\). You run the policy or have some expert collected samples for bootstrapping.</li>
+  <li>fit a model (\(p(s_{t+1}\vert s_t,a_t)\)) or estimate the total rewards (\(E(r)\))</li>
+  <li>improve the policy</li>
+  <li>repeat!</li>
+</ol>
+
+<p>There are a few options you can use in step 2 and 3. The first distinctions we will make are model-based vs. model-free.</p>
+
+<h2 id="model-based-vs-model-free-learning">Model-based vs Model-free Learning</h2>
+
+<p>Going back to the markov diagram, we can say the probability of seeing a particular rollout is \(p(s_1)\prod^T_{t=1}\pi_\theta(a_t, s_t) p(s_{t+1} \vert s_t,a_t)\).</p>
+
+<p>In the model-free approach, we do not try to learn \(p(s_{t+1}\vert s_t,a_t)\).</p>
+
+<p>In the model-based approach, we try to learn the system dynamics. For example, suppose we are building a robot that can pick up an object from one place and drop it in another place; in model-based reinforcement learning, we will have an understanding of where the robot arm will be (\(s_{t+1}\)) after it moved its arm right once (\(a_t\)) from where it was (\(s_t\))</p>
+
+<p>In the next few posts, we will discuss a few options within model-free approach, starting from policy gradient.</p>
+
+  </div><a class="u-url" href="/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Skylar Lee</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Skylar Lee</li><li><a class="u-email" href="mailto:me@skylarlee.dev">me@skylarlee.dev</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Just hanging here.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

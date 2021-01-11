@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Reinforcement Learning Primer | Skylar Lee</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Reinforcement Learning Primer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Just hanging here." />
+<meta property="og:description" content="Just hanging here." />
+<link rel="canonical" href="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer.html" />
+<meta property="og:url" content="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer.html" />
+<meta property="og:site_name" content="Skylar Lee" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-15T00:00:00-08:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reinforcement Learning Primer","dateModified":"2020-12-15T00:00:00-08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer.html"},"description":"Just hanging here.","url":"http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer.html","datePublished":"2020-12-15T00:00:00-08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Skylar Lee" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Skylar Lee</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Reinforcement Learning Primer</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-12-15T00:00:00-08:00" itemprop="datePublished">Dec 15, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<p>Reinforcement learning (RL) is an area of machine learning. A most widely used and understood area of machine learning is supervised learning, so I think it’s easy to understand what it is by comparing it against supervised learning. In supervised learning, you know inputs and labels (the truth), and your goal is to come up with a model that can guess the labels only based on inputs. One example will be given some facts about a home, you would like to guess what the market price of the home is. You guess will be your prediction, and the truth value is what it gets sold in real life.</p>
+
+<p>In reinforcement learning, you do not have this truth values, only whether your “inputs” (policy, to be better defined later) are good or bad and to what degree they are good or bad.</p>
+
+<p>When would this kind of problem-framing be useful? Virtually all the problems that have different ways to achieve a certain outcome. For example, when you play a board game like Catan and you win, you don’t win with the same sequence of actions all the time. Your board setup is different every time, you take different actions every time, but you have a consistent scoring mechanism that advises you on which actions to take.</p>
+
+<p>There are a few ways that reinforcement learning is different from supervised learning:</p>
+
+<ol>
+  <li>your inputs are not independent and identically distributed (i.i.d.). In the Catan example, your game state changes depend on your action, (which affects your opponents’ actions, etc)!</li>
+  <li>ground truth is not known. Going back to the Catan example, you have different ways to win even given the same initial board setup, and it would be very expensive to come up with all different possible ways to win and all possible actions your opponents can take!</li>
+</ol>
+
+<p>Some other examples that reinforcement learning is used in solving are physical tasks, such as moving an item from one place to another,games like Atari and Go, and autonomous driving.</p>
+
+<p>How should we frame these kinds of problems so that we can attempt at solving?</p>
+
+<p>A markov decision process (MDP) is a great way to formalize the problem. In a Markov decision process, you deal with four variables</p>
+
+<p>S: state</p>
+
+<p>A: action</p>
+
+<p>P: probability of action taken given state</p>
+
+<p>R: immediate reward per action</p>
+
+<p>//TODO:insert markov diagram</p>
+
+<p>Sometimes you don’t know the real state, however. For example, when you are playing a poker, you don’t have full information; the only thing you can do is to observe. You can use your observation to infer the true state, and your decision process will look more like partially observed Markov decision process</p>
+
+<p>//TODO:insert with observation diagram</p>
+
+<p>In reinforcement learning, our goal is to learn what will happen to the rewards when I take certain actions in a given state. We call this a <strong>policy</strong>, typically represented with \(\pi\).</p>
+
+<h3 id="imitation-learning">Imitation Learning</h3>
+
+<p>So how might we learn a policy? I mentioned earlier that reinforcement learning is different from supervised learning in that your inputs are not i.i.d., and your ground truth is not known, i.e., there isn’t necessarily the one and only correct policy. But what if there’s a good example to emulate, so there’s a well agreed-upon ground “truth”? For example, if we wanted a self-driving car, can we just feed a bunch of humans’ actual driving routes (if an self-driving car would drive like I do, it might be good enough for me… I’m still alive!) and have the car learn to replicate? Well, that sounds a lot like supervised learning, and it is! We call this <strong>imitation learning/behavior cloning</strong>. So let’s talk about it before we discuss other fancy RL algorithms.</p>
+
+<p>The steps to be taken are:</p>
+
+<ol>
+  <li>
+    <p>collection demonstrations from an expert, e.g., me driving in the above example. This will consist of multiple independent sequences of action, or <strong>trajectories</strong> \(\tau\).</p>
+  </li>
+  <li>
+    <p>treat demonstrations as i.i.d. state-action pairs \((s_{0}, a_0), (s_1, a_1), ...\).</p>
+  </li>
+  <li>
+    <p>train a policy \(\pi_\theta\) that minimizes a loss function \(L(\pi_\theta(s), a)\).</p>
+  </li>
+</ol>
+
+<p>What might go wrong with this approach?</p>
+
+<p>The biggest problem is the distributional shift between the expert demonstrations and policy. Suppose I demonstrated a right turn, but the model, for various reasons to be explained later, wanted to go straight, the car ends up in a state that it’s never seen before during the training phase, because I never demonstrated what I would do in that strange road! The policy, which was never trained with a particular state, takes an action that is suboptimal, and it continues to move further and further from the training trajectories.</p>
+
+<p>A solution to this is to collect more data in that state. In the self-driving car example, a human may annotate what action to take in the new state that the policy ends up in, augment the training data, and train the policy again. We call this practice <strong>DAgger (Dataset Aggregation)</strong>.</p>
+
+<p>There are still other problems, such as humans not being consistent in their demonstration (Non-Markovian behavior), multimodal behavior (multiple acceptable trajectories demonstrated given the same state). You can try mitigating these problems using a Gaussian mixture model, introducing latent variables, etc.</p>
+
+<p>For these reasons, the supervised learning approach to reinforcement learning tends to underperform other RL algorithms (we’ll discuss soon!). Rewards-based RL algorithms tend to work better than imitation learning, but it is useful when the right reward function is ambiguous, rewards are not frequent, or when you want with a reasonable baseline to start training your rewards-based RL algorithm. A more in-depth discussion of rewards-based RL algorithms will start from the next post.</p>
+
+  </div><a class="u-url" href="/reinforcement_learning/2020/12/reinforcement-learning-primer.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Skylar Lee</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Skylar Lee</li><li><a class="u-email" href="mailto:me@skylarlee.dev">me@skylarlee.dev</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Just hanging here.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

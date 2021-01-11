@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-01-10T17:34:23-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Skylar Lee</title><subtitle>Just hanging here.</subtitle><entry><title type="html">Importance Sampling</title><link href="http://localhost:4000/2021/01/importance-sampling.html" rel="alternate" type="text/html" title="Importance Sampling" /><published>2021-01-10T00:00:00-08:00</published><updated>2021-01-10T00:00:00-08:00</updated><id>http://localhost:4000/2021/01/importance-sampling</id><content type="html" xml:base="http://localhost:4000/2021/01/importance-sampling.html"></content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Actor-Critic Methods in Reinforcement Learning</title><link href="http://localhost:4000/reinforcement_learning/2021/01/actor-critic.html" rel="alternate" type="text/html" title="Actor-Critic Methods in Reinforcement Learning" /><published>2021-01-09T00:00:00-08:00</published><updated>2021-01-09T00:00:00-08:00</updated><id>http://localhost:4000/reinforcement_learning/2021/01/actor-critic</id><content type="html" xml:base="http://localhost:4000/reinforcement_learning/2021/01/actor-critic.html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;In my previous &lt;a href=&quot;/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html&quot;&gt;post&lt;/a&gt; on reinforcement learning (RL) based on rewards, I mentioned the true objective of reinforcement function is find the parameters of your policy such that you maximize the expected value of the total rewards, i.e., \(\mathop{\operatorname{arg\,max_\theta}} E_{\tau\sim p_\theta(\tau)} \sum_t r(s_t, a_t)\). For example, you have come up with some architecture for your model, e.g., your neural net, and then during the training phase, you need to find the right numbers for the matrices (parameters). In each optimization step during the training, you need to update your parameters a bit by bit based on your objective function. Our true object has quite a few values to calculate, so computer scientists have come up with some other objective functions that are nicer to use. // list why value/q functions.&lt;/p&gt;
+
+&lt;p&gt;Let’s define a couple of value functions.&lt;/p&gt;
+
+&lt;h2 id=&quot;q-function&quot;&gt;Q-function&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Q-function (\(Q(s_t, a_t)\))&lt;/em&gt; provides total reward from taking \(a_t\) in \(s_t\).&lt;/p&gt;
+
+&lt;p&gt;To help understanding the relationship of this to the RL objective, let me give you an example. If we knew the reward of taking action \(a_1\) in state \(s_1\), and understood the probability distribution of taking \(a_1\) in \(s_1\) and that of the state \(s_1\), then, the RL objective can be rewritten as&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$$E_{s_1 ~ p(s_1)} [E_{a_1 ~ \pi(a_1 \vert s_1)}[Q(s_1, a_1)&lt;/td&gt;
+      &lt;td&gt;s_1]]$$.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This will be an important fact for motivating Q-learning later.&lt;/p&gt;
+
+&lt;h2 id=&quot;value-function&quot;&gt;Value function&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;em&gt;Value function (\(V(s_t)\))&lt;/em&gt; provides total reward from \(s_t\). Note that it doesn’t depend on the action, so that it should sum Q-values over all the possible actions per $$a_t ~ \pi(a_t&lt;/td&gt;
+      &lt;td&gt;s_t)$$. The RL objective can be rewritten as&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;\(E_{s_1 ~ p(s_1)}[V(s_1)]\).&lt;/p&gt;
+
+&lt;h3 id=&quot;actor-critic&quot;&gt;Actor-Critic&lt;/h3&gt;
+
+&lt;p&gt;Recall in the policy gradient method (related &lt;a href=&quot;/reinforcement_learning/2020/12/policy-gradient.html&quot;&gt;post&lt;/a&gt;, the gradient that we used to update the policy parameters is&lt;/p&gt;
+
+&lt;p&gt;$$&lt;/p&gt;
+
+&lt;p&gt;// talk about policy gradient
+// high variance with small sample
+// import with baseline, rewards to go
+// estimate by fitting sampled reward sums
+//
+An actor-critic method is like a hybrid of using policy gradients and value functions.&lt;/p&gt;
+
+&lt;p&gt;Instead of fitting the RL objective directly, we fit either \(V(s)\) or \(Q(s, a)\), and update the&lt;/p&gt;
+
+&lt;p&gt;estimate value function or Q-function of the current policy,
+use it to improve policy&lt;/p&gt;</content><author><name></name></author><category term="reinforcement_learning" /><summary type="html"></summary></entry><entry><title type="html">Model free vs Model-based Reinforcement Learning</title><link href="http://localhost:4000/reinforcement_learning/2020/12/model-free-based-reinforcement-learning.html" rel="alternate" type="text/html" title="Model free vs Model-based Reinforcement Learning" /><published>2020-12-21T00:00:00-08:00</published><updated>2020-12-21T00:00:00-08:00</updated><id>http://localhost:4000/reinforcement_learning/2020/12/model-free-based-reinforcement-learning</id><content type="html" xml:base="http://localhost:4000/reinforcement_learning/2020/12/model-free-based-reinforcement-learning.html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;There are many different reinforcement learning (RL) algorithms. One of the ways you can categorize RL algorithms is whether they use a model or not. You can think of a model as understanding of how the system changes when you perform an action. For example, suppose you are picking up an object from one place and drop it in another place. You understand the physics and can guess where your hand will be when you moved it right. That understading of the state change is equivalent to “model” in reinforcement learning.&lt;/p&gt;
+
+&lt;p&gt;Going back to the markov diagram, we can say the probability of seeing a particular rollout is \(p(s_1)\prod^T*{t=1}\pi*\theta(a_t%7Cs_t)p(s_{t+1}%7Cs_t,a_t)\). Here the model is \(p(s_{t+1}%7Cs_t,a_t)\), transition probability distribution.&lt;/p&gt;
+
+&lt;h3 id=&quot;model-free&quot;&gt;Model-free&lt;/h3&gt;
+
+&lt;p&gt;In the model-free approach, we do not try to learn \(p(s_{t+1}%7Cs_t,a_t)\); we just watch the states change during the sampling phase. \(\tau\) is just given to us.&lt;/p&gt;
+
+&lt;h3 id=&quot;model-based&quot;&gt;Model-based&lt;/h3&gt;
+
+&lt;p&gt;In the model-based approach, we try to learn this transition probability distribution and use it in improving your policy as well.&lt;/p&gt;
+
+&lt;p&gt;So why would one use a model-free vs model-based algorithm, and why are there different approaches?&lt;/p&gt;
+
+&lt;h3 id=&quot;sampling-efficiency&quot;&gt;Sampling efficiency&lt;/h3&gt;
+
+&lt;p&gt;Needing fewer samples to train a good policy is an advantage. Here, model-based reinforcement learning has advantage; since you will learn how the state changes given action as part of the algorithm, you don’t need to generate new samples when the policy changes. For example, if you were training a policy that moves an object with a robot arm, and your policy put the arm in a place it’s never been, you would want to run a physical simulation or have the arm move in the real environment to make an observation of what happens, e.g., it bumps into the wall, knocks off another object, etc.
+Humans gain understanding of physics, so we can guess that when our hand moves and makes contact with an object with enough momentum, e.g., a vase, we will knock it down without ever having to do that ourselves. (Maybe young humans don’t, because they are still busy generating samples…)&lt;/p&gt;
+
+&lt;h3 id=&quot;stability-and-training-efficiency&quot;&gt;Stability and Training Efficiency&lt;/h3&gt;
+
+&lt;p&gt;Stability is a big issue in reinforcement learning. In supervised learning, we optimize the objective function almost always with gradient descent. In reinforcement learning, we often don’t; we use other approximations, such as with value functions (what’s the expected total reward in a given state), how well the model fits.
+Here, it’s hard to say one is better than the other. Model-based RL algorithm has the issue that we’re optimizing for the fit of the model with gradient descent, rather than the rewards, the true objective of reinforcement learning, and a good model doesn’t necessarily result in high rewards. Policy gradient method, which is model-free and optimizes the rewards directly, tends to converge very slowly in many cases.
+Model-based learning has been applied in robotics and seen some success, as there has already been a lot of success in computer vision, such as &lt;img src=&quot;https://dl.acm.org/doi/abs/10.5555/2946645.2946684&quot; alt=&quot;this paper&quot; /&gt;, but that’s not to say model-free approach was not successful in robotics (note &lt;img src=&quot;https://arxiv.org/abs/1806.10293&quot; alt=&quot;QT-Opt&quot; /&gt;)&lt;/p&gt;</content><author><name></name></author><category term="reinforcement_learning" /><summary type="html"></summary></entry><entry><title type="html">Introduction to Policy Gradient Method in Reinforcement Learning</title><link href="http://localhost:4000/reinforcement_learning/2020/12/policy-gradient.html" rel="alternate" type="text/html" title="Introduction to Policy Gradient Method in Reinforcement Learning" /><published>2020-12-21T00:00:00-08:00</published><updated>2020-12-21T00:00:00-08:00</updated><id>http://localhost:4000/reinforcement_learning/2020/12/policy-gradient</id><content type="html" xml:base="http://localhost:4000/reinforcement_learning/2020/12/policy-gradient.html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Policy gradient is a reinforcement learning (RL) algorithm that directly tries to maximize the rewards (as opposed to using another proxy value, e.g., q function). Let’s revisit the goal of reinforcement learning: it’s to maximize the expected cumulative rewards, i.e.,&lt;/p&gt;
+
+\[p_\theta (\tau) = p(s_1)\prod^T_{t=1}\pi_\theta(a_t|s_t)p(s_{t+1}|s_t,a_t) \\
+\mathop{\operatorname{arg\,max_\theta}} E_{\tau\sim p_\theta(\tau)} \sum_t r(s_t, a_t)\]
+
+&lt;p&gt;We will try to find the best policy by taking the gradient of the objective&lt;/p&gt;
+
+\[J(\theta) =  E_{\tau\sim p_\theta(\tau)} \sum_t r(s_t, a_t)\]
+
+&lt;p&gt;We will first go through the varient of policy gradient method called REINFORCE; it uses Monte-Carlo methods in that it learns from observations without modeling the dynamics and uses the mean of observations as the approximation of the expected return.&lt;/p&gt;
+
+&lt;p&gt;Recall that the typical steps of training in reinforcement learning consists of repeating 1) generating samples, 2)fitting a model, 3)improving the policy. We can estimate \(J(\theta)\) by running the policy and observing the rewards. For example, if I’m using reinforcement learning to train a polcy plaing an Atari game, I would start by making random moves, get a set of state and action pairs \(s_1, a_1, s_2, a_2\). Our reward function will be the score displayed in the game, and can be mapped as \(r(s_i, a_i)\). It would be a good idea to have a few or more trajectories before we fit a model to get more data; if we had \(N\) trajectories, then&lt;/p&gt;
+
+\[J(\theta) = \frac{1}{N} \sum_i^N \sum_t^T r(s_{i,t}, a_{i,t})\]
+
+&lt;p&gt;After some math jugling, you will find the gradient is&lt;/p&gt;
+
+\[\triangledown_\theta J(\theta) = \sum_i \bigl( \sum_t \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( \sum_t r(s_{i,t}, a_{i,t}) \bigr)\]
+
+&lt;p&gt;So you calculate the gradient and update the policy by
+\(\theta_{t+1} \leftarrow \theta_t + \alpha \triangledown J(\theta_t)\)&lt;/p&gt;
+
+&lt;p&gt;Here’s a sample pseudocode snippet in pytorch:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optim&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;batch_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observation_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hidden_layer_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;learning_rate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;policy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sequential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Linear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observation_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hidden_layer_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                            &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Linear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hidden_layer_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action_dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;optimizer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Adam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;policy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;learning_rate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NUM_STEPS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;observations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rewards&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next_observations&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;observations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;acts_dist_given_obs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;policy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;loss&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mul&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;acts_dist_given_obs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log_prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rewards&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;optimizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zero_grad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;loss&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;backwards&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;optimizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;step&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The policy gradient is nice because we don’t really need to know about distributions of states or the dynamics model \(p(s_{t+1} \vert s_t,a_t)\). It’s also useful when your action space is infinite, because you can actually take the gradient to move towards a better policy. Unlike in policy gradient, in policy iteration methods, the “improving the policy” step will have to iterate through all the possible actions to find one that maximizes the q-value (expected rewards given a state and an action).&lt;/p&gt;
+
+&lt;p&gt;The downside is that we need a lot of samples to deal with the variance. Hihg variance means the policy is going to not converge well and we will spend a lot of time training. However, without sampling more, there are some tricks to help reduce the variance.&lt;/p&gt;
+
+&lt;h3 id=&quot;reducing-variance&quot;&gt;Reducing variance&lt;/h3&gt;
+
+&lt;h4 id=&quot;using-rewards-to-go&quot;&gt;Using Rewards-To-Go&lt;/h4&gt;
+&lt;p&gt;Take a look at our policy gradient.&lt;/p&gt;
+
+\[\triangledown_\theta J(\theta) = \sum_i \bigl( \sum_{t=1}^T \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( \sum_{t=1}^T r(s_{i,t}, a_{i,t}) \bigr)\]
+
+&lt;p&gt;We know that an action taken at \(t'\) cannot affect rewards at \(t &amp;lt; t'\). So we can skip adding it to our gradient. By virtue of having fewer items to sum, we can reduce variance. Witih this modification, our gradient becomes&lt;/p&gt;
+
+\[\triangledown_\theta J(\theta) = \sum_i \bigl( \sum_t \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) \bigr)\]
+
+&lt;p&gt;In our code, we will use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rewards_to_go&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;torch.sum(rewards, 1)&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;rewards_to_go&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rewards&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rewards&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;rewards_to_go&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rewards&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;using-baseline&quot;&gt;Using Baseline&lt;/h4&gt;
+&lt;p&gt;Another idea is to subtract a baseline. This will reduce variance, while keeping the bias unchanged because
+\(E_{a_t ~ \pi(\theta)}\bigl[ \triangledown_\theta \log \pi_\theta(a_t \vert s_t)b(s_t) \bigr] = 0\).&lt;/p&gt;
+
+&lt;p&gt;We could use the average rewards \(b = \frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_t', a_t')\) from the policy \(\pi\), or train a simple neural net that predicts rewards based on observation. Our gradient will now be&lt;/p&gt;
+
+\[\triangledown_\theta J(\theta) = \sum_i \bigl( \sum_t \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) \bigr)\]
+
+&lt;p&gt;These tricks will be a good motivator for the Actor-Critic method, and I’ll discuss that next time!&lt;/p&gt;
+
+&lt;!-- // how do we improve variance? what if good samples have 0?
+// how to reduce variance? use rewards to go, subtract a baseline (average reward)
+https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html
+https://towardsdatascience.com/policy-gradients-in-a-nutshell-8b72f9743c5d
+https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html
+https://lilianweng.github.io/lil-log/2018/02/19/a-long-peek-into-reinforcement-learning.html#monte-carlo-methods --&gt;</content><author><name></name></author><category term="reinforcement_learning" /><summary type="html"></summary></entry><entry><title type="html">Reinforcement Learning Rewards-based Algorithms - Primer</title><link href="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html" rel="alternate" type="text/html" title="Reinforcement Learning Rewards-based Algorithms - Primer" /><published>2020-12-20T00:00:00-08:00</published><updated>2020-12-20T00:00:00-08:00</updated><id>http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards</id><content type="html" xml:base="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer-rewards.html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Reinforcement learning (RL) helps discover how agents ought to take actions (policy) in an environment (transition operator) in order to maximize the notion of cumulative reward. In this post, I’m going to discuss how we can define this problem more concretely with a reward function and the different objective functions we can optimize.&lt;/p&gt;
+
+&lt;p&gt;// say some example
+As a refresher, we&lt;/p&gt;
+
+&lt;p&gt;state, action, policy, reward&lt;/p&gt;
+
+&lt;p&gt;We learned that we can use Markov decision process (MDP) to describe a reinforcement learning problem.&lt;/p&gt;
+
+&lt;p&gt;// diagram&lt;/p&gt;
+
+&lt;p&gt;where&lt;/p&gt;
+
+\[S: \text{state space} \\
+A: \text{action space} \\
+O: \text{observation space} \\
+\epsilon: \text{emission probability } (p(s_t|o_t)) \\
+T: \text{transition operator } (p(s_{t+1}|s_{t},a_{t})) \\
+r: \text{reward function } (r(s,a))\]
+
+&lt;h2 id=&quot;training-cycle&quot;&gt;Training Cycle&lt;/h2&gt;
+&lt;p&gt;Let’s call the parameters of the policy model \(\theta\), and \(\pi_{\theta}\) represents the policy with the parameters \(\theta\). Let’s suppose we took actions according to the policy \(\pi_{\theta}\) (rollout), and we got a sequence of states and action pairs, \(s_0, a_0, s_1, a_1, ...\). The goal is to find \(\theta\) such as that we maximize the expected rewards, i.e.,
+\(\mathop{\operatorname{arg\,max_\theta}} E_{\tau\sim p_\theta(\tau)} \sum_t r(s_t, a_t)\), where \(\tau\) is the rollout \(s_1,a_1,s_2,a_2,...\) with a policy \(\pi\).&lt;/p&gt;
+
+&lt;p&gt;In supervised learning, we have inputs, labels, and model prediction, and the goal is to come up with the model that generates predictions that are as close to labels as possible, without losing the ability to generalize.
+In reinforcement learning, your policy (\(\pi\)), which action to take) and model (state transition, \(p(s_{t+1}|s_t,a_t)\)) is responsible for generating the future states that it predicts on. Therefore, we can’t simply do a single pass training (there is ample research going on in training reinforcement learning this way, called offline reinforcement learning) and we have a cycle:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;generate samples \((s,a)\). You run the policy or have some expert collected samples for bootstrapping.&lt;/li&gt;
+  &lt;li&gt;fit a model (\(p(s_{t+1}\vert s_t,a_t)\)) or estimate the total rewards (\(E(r)\))&lt;/li&gt;
+  &lt;li&gt;improve the policy&lt;/li&gt;
+  &lt;li&gt;repeat!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There are a few options you can use in step 2 and 3. The first distinctions we will make are model-based vs. model-free.&lt;/p&gt;
+
+&lt;h2 id=&quot;model-based-vs-model-free-learning&quot;&gt;Model-based vs Model-free Learning&lt;/h2&gt;
+
+&lt;p&gt;Going back to the markov diagram, we can say the probability of seeing a particular rollout is \(p(s_1)\prod^T_{t=1}\pi_\theta(a_t, s_t) p(s_{t+1} \vert s_t,a_t)\).&lt;/p&gt;
+
+&lt;p&gt;In the model-free approach, we do not try to learn \(p(s_{t+1}\vert s_t,a_t)\).&lt;/p&gt;
+
+&lt;p&gt;In the model-based approach, we try to learn the system dynamics. For example, suppose we are building a robot that can pick up an object from one place and drop it in another place; in model-based reinforcement learning, we will have an understanding of where the robot arm will be (\(s_{t+1}\)) after it moved its arm right once (\(a_t\)) from where it was (\(s_t\))&lt;/p&gt;
+
+&lt;p&gt;In the next few posts, we will discuss a few options within model-free approach, starting from policy gradient.&lt;/p&gt;</content><author><name></name></author><category term="reinforcement_learning" /><summary type="html"></summary></entry><entry><title type="html">Reinforcement Learning Primer</title><link href="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer.html" rel="alternate" type="text/html" title="Reinforcement Learning Primer" /><published>2020-12-15T00:00:00-08:00</published><updated>2020-12-15T00:00:00-08:00</updated><id>http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer</id><content type="html" xml:base="http://localhost:4000/reinforcement_learning/2020/12/reinforcement-learning-primer.html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Reinforcement learning (RL) is an area of machine learning. A most widely used and understood area of machine learning is supervised learning, so I think it’s easy to understand what it is by comparing it against supervised learning. In supervised learning, you know inputs and labels (the truth), and your goal is to come up with a model that can guess the labels only based on inputs. One example will be given some facts about a home, you would like to guess what the market price of the home is. You guess will be your prediction, and the truth value is what it gets sold in real life.&lt;/p&gt;
+
+&lt;p&gt;In reinforcement learning, you do not have this truth values, only whether your “inputs” (policy, to be better defined later) are good or bad and to what degree they are good or bad.&lt;/p&gt;
+
+&lt;p&gt;When would this kind of problem-framing be useful? Virtually all the problems that have different ways to achieve a certain outcome. For example, when you play a board game like Catan and you win, you don’t win with the same sequence of actions all the time. Your board setup is different every time, you take different actions every time, but you have a consistent scoring mechanism that advises you on which actions to take.&lt;/p&gt;
+
+&lt;p&gt;There are a few ways that reinforcement learning is different from supervised learning:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;your inputs are not independent and identically distributed (i.i.d.). In the Catan example, your game state changes depend on your action, (which affects your opponents’ actions, etc)!&lt;/li&gt;
+  &lt;li&gt;ground truth is not known. Going back to the Catan example, you have different ways to win even given the same initial board setup, and it would be very expensive to come up with all different possible ways to win and all possible actions your opponents can take!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Some other examples that reinforcement learning is used in solving are physical tasks, such as moving an item from one place to another,games like Atari and Go, and autonomous driving.&lt;/p&gt;
+
+&lt;p&gt;How should we frame these kinds of problems so that we can attempt at solving?&lt;/p&gt;
+
+&lt;p&gt;A markov decision process (MDP) is a great way to formalize the problem. In a Markov decision process, you deal with four variables&lt;/p&gt;
+
+&lt;p&gt;S: state&lt;/p&gt;
+
+&lt;p&gt;A: action&lt;/p&gt;
+
+&lt;p&gt;P: probability of action taken given state&lt;/p&gt;
+
+&lt;p&gt;R: immediate reward per action&lt;/p&gt;
+
+&lt;p&gt;//TODO:insert markov diagram&lt;/p&gt;
+
+&lt;p&gt;Sometimes you don’t know the real state, however. For example, when you are playing a poker, you don’t have full information; the only thing you can do is to observe. You can use your observation to infer the true state, and your decision process will look more like partially observed Markov decision process&lt;/p&gt;
+
+&lt;p&gt;//TODO:insert with observation diagram&lt;/p&gt;
+
+&lt;p&gt;In reinforcement learning, our goal is to learn what will happen to the rewards when I take certain actions in a given state. We call this a &lt;strong&gt;policy&lt;/strong&gt;, typically represented with \(\pi\).&lt;/p&gt;
+
+&lt;h3 id=&quot;imitation-learning&quot;&gt;Imitation Learning&lt;/h3&gt;
+
+&lt;p&gt;So how might we learn a policy? I mentioned earlier that reinforcement learning is different from supervised learning in that your inputs are not i.i.d., and your ground truth is not known, i.e., there isn’t necessarily the one and only correct policy. But what if there’s a good example to emulate, so there’s a well agreed-upon ground “truth”? For example, if we wanted a self-driving car, can we just feed a bunch of humans’ actual driving routes (if an self-driving car would drive like I do, it might be good enough for me… I’m still alive!) and have the car learn to replicate? Well, that sounds a lot like supervised learning, and it is! We call this &lt;strong&gt;imitation learning/behavior cloning&lt;/strong&gt;. So let’s talk about it before we discuss other fancy RL algorithms.&lt;/p&gt;
+
+&lt;p&gt;The steps to be taken are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;collection demonstrations from an expert, e.g., me driving in the above example. This will consist of multiple independent sequences of action, or &lt;strong&gt;trajectories&lt;/strong&gt; \(\tau\).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;treat demonstrations as i.i.d. state-action pairs \((s_{0}, a_0), (s_1, a_1), ...\).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;train a policy \(\pi_\theta\) that minimizes a loss function \(L(\pi_\theta(s), a)\).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;What might go wrong with this approach?&lt;/p&gt;
+
+&lt;p&gt;The biggest problem is the distributional shift between the expert demonstrations and policy. Suppose I demonstrated a right turn, but the model, for various reasons to be explained later, wanted to go straight, the car ends up in a state that it’s never seen before during the training phase, because I never demonstrated what I would do in that strange road! The policy, which was never trained with a particular state, takes an action that is suboptimal, and it continues to move further and further from the training trajectories.&lt;/p&gt;
+
+&lt;p&gt;A solution to this is to collect more data in that state. In the self-driving car example, a human may annotate what action to take in the new state that the policy ends up in, augment the training data, and train the policy again. We call this practice &lt;strong&gt;DAgger (Dataset Aggregation)&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;There are still other problems, such as humans not being consistent in their demonstration (Non-Markovian behavior), multimodal behavior (multiple acceptable trajectories demonstrated given the same state). You can try mitigating these problems using a Gaussian mixture model, introducing latent variables, etc.&lt;/p&gt;
+
+&lt;p&gt;For these reasons, the supervised learning approach to reinforcement learning tends to underperform other RL algorithms (we’ll discuss soon!). Rewards-based RL algorithms tend to work better than imitation learning, but it is useful when the right reward function is ambiguous, rewards are not frequent, or when you want with a reasonable baseline to start training your rewards-based RL algorithm. A more in-depth discussion of rewards-based RL algorithms will start from the next post.&lt;/p&gt;</content><author><name></name></author><category term="reinforcement_learning" /><summary type="html"></summary></entry></feed>
