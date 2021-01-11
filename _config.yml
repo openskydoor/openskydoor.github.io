@@ -33,9 +33,6 @@ permalink: /:categories/:year/:month/:title:output_ext
 theme: minima
 plugins:
   - jekyll-feed
-  - jekyll-scholar
-scholar:
-  style: modern-language-association
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
