@@ -30,7 +30,7 @@ permalink: /:categories/:year/:month/:title:output_ext
 # markdown: kramdown
 
 # Build settings
-theme: minima
+theme: jekyll-theme-dinky
 plugins:
   - jekyll-feed
 # Exclude from processing.
