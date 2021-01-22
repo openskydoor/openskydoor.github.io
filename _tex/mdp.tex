@@ -15,9 +15,11 @@
 
         \draw[every loop]
             (s0) edge[bend right, auto=right] node {$p(s_{t+1}\vert s_t, a_t)$} (s1)
+            (s0) edge[bend left, auto=left] node {$\pi_\theta(a_t \vert s_t)$} (a0)
             (s1) edge[bend right] node {} (s2)
-            (a0) edge[bend left] node {} (s1)
-            (a1) edge[bend left] node {} (s2);
+            (s1) edge[bend left] node {} (a1)
+            (a0) edge[] node {} (s1)
+            (a1) edge[] node {} (s2);
     \end{tikzpicture}
 
 \end{document}

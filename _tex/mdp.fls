@@ -1,9 +1,9 @@
-PWD /Users/soleez/Documents/code/openskydoor.github.io/tex
+PWD /Users/soleez/Documents/code/openskydoor.github.io/_tex
 INPUT /usr/local/texlive/2020/texmf.cnf
 INPUT /usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.tex
-OUTPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.log
+INPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.tex
+OUTPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.log
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/standalone/standalone.cls
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/standalone/standalone.cls
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/tools/shellesc.sty
@@ -151,9 +151,9 @@ INPUT /usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libr
 INPUT /usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
-INPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.aux
-INPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.aux
-OUTPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.aux
+INPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.aux
+INPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.aux
+OUTPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.aux
 INPUT /usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
@@ -163,9 +163,9 @@ INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
-OUTPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.pdf
+OUTPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.pdf
 INPUT /usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.aux
+INPUT /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.aux
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb

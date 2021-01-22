@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  18 JAN 2021 19:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  20 JAN 2021 19:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.tex
-(/Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.tex
+**/Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.tex
+(/Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.tex
 LaTeX2e <2020-02-02> patch level 5
 L3 programming layer <2020-03-06> (/usr/local/texlive/2020/texmf-dist/tex/latex/standalone/standalone.cls
 Document Class: standalone 2018/03/26 v1.3a Class to compile TeX sub-files standalone
@@ -342,7 +342,7 @@ File: tikzlibrarypositioning.code.tex 2020/01/08 v3.1.5b (3.1.5b)
 File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count277
 \l__pdf_internal_box=\box79
-) (/Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.aux)
+) (/Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.aux)
 \openout1 = `mdp.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
@@ -379,17 +379,17 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 )) [1
 
-{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (/Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.aux) ) 
+{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (/Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.aux) ) 
 Here is how much of TeX's memory you used:
  13238 strings out of 480608
- 276419 string characters out of 5903631
- 500493 words of memory out of 5000000
+ 276428 string characters out of 5903631
+ 501493 words of memory out of 5000000
  28903 multiletter control sequences out of 15000+600000
  532792 words of font info for 26 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,9n,68p,477b,807s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,9n,68p,478b,805s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on /Users/soleez/Documents/code/openskydoor.github.io/tex/mdp.pdf (1 page, 39092 bytes).
+Output written on /Users/soleez/Documents/code/openskydoor.github.io/_tex/mdp.pdf (1 page, 39829 bytes).
 PDF statistics:
  31 PDF objects out of 1000 (max. 8388607)
  22 compressed objects within 1 object stream
