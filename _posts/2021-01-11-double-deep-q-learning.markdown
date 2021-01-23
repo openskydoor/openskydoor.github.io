@@ -7,10 +7,10 @@ redirect_from:
 ---
 {% include math.html %}
 
-Q-learning is a type of value-based methods in reinforcement learning when you don't learn a policy explicitly; instead you just learn the Q-function. In this world, you would simply take (roughly) an action that maximizes the Q-function. I'm going to talk in particular about double deep q-learning (DQN), which is one of the flavors that have shown great performance.
+Q-learning is a type of value-based methods in reinforcement learning (RL) in which you don't learn a policy explicitly; instead you just learn the Q-function. In this world, you would simply take an action that maximizes the Q-function. In this post, I'm going to focus on double deep q-learning (DQN), a flavor of Q-learning that has shown superior performance to classic DQN.
 
 #### Policy
-As I mentioned earlier, in Q-learning, we're foregoing learning the policy entirely and keeping the policy as choosing any action that maximizes the Q-function. That means our policy $$\pi$$ is essentially
+In Q-learning, we're foregoing learning the policy entirely and keeping the policy as choosing any action that returns the maximum value from Q-function. That means our policy $$\pi$$ is essentially
 
 $$
 \pi(a_t|s_t) = \begin{cases}
@@ -27,47 +27,53 @@ Compared to the actor-critic method, we are skipping the step 4 and 5.
 4. <s>calculate the gradient of the RL objective</s>
 5. <s>Update the parameters of the model</s>
 
-In this method, we were using advantage to nudge the policy to move in the right direction. We are still doing the same in Q-learning, but note that because of our policy, $$V^\pi(s) = \max_a Q^\pi(s, a)$$. This means we can just maximize Q-function and end up with the same intention.
+In the actor-critic method, we use $$A^\pi$$ to nudge the policy to move in the right direction. We are still doing the same in Q-learning, but note due to our policy's deterministic nature, $$V^\pi(s) = \max_a Q^\pi(s, a)$$. This means we can just focus on learning Q-function and still end up with the same intention. It should now make sense why this method is called "Q-learning".
 
 #### Bellman equation
-Bellman equation is a recursive formula for q-function,
+Bellman equation is a recursive formula for q-function.
+
+Recall the identity:
+
+$$
+Q^\pi(s_t, a_t) = r(s_t, a_t) + \gamma V^\pi(s_{t+1})
+$$
+
+Since $$V^\pi(s_t) = E[Q^\pi (s_t, a_t)]$$,
 
 $$Q^\pi(s_t, a_t) = r(s_t, a_t) + \gamma E[Q^\pi (s_{t+1}, a_{t+1})]$$
 
-Since our policy is one that chooses an action that maximizes q-function, we approximate $$E[Q(s_{t+1})] \approx \max_{\boldsymbol{a_{t+1}}} Q_\phi (s_{t+1}, a_{t+1})$$. Let's define our target as
+Since our policy is one that chooses an action that maximizes q-function, we approximate $$E[Q(s_{t+1})] \approx \max_{\boldsymbol{a_{t+1}}} Q_\phi (s_{t+1}, a_{t+1})$$. We can define our target $$y$$ for fitting $$\hat{Q}^\pi$$ as
 
 $$y = r(s_t, a_t) + \gamma \max_a Q^\pi (s_{t+1}, a_{t+1})$$
 
 Our goal is to train $$Q_\phi$$ such that $$ r(s_t, a_t) + \gamma \max_t Q(s_{t+1}, a) - y$$ is minimal. This error is called Bellman error.
 
-What I have described so far is relevant to Q-learning. The next two items I discuss are specific to double DQN, that outperforms original DQN.
+What I have described so far is relevant to any Q-learning. The next two items I discuss are specific to double DQN.
 
 #### Target Network
+Let's take a closer look at our $$Q_\phi$$ gradient.
 
-So far, we have learned that Q-learning involves a policy that chooses an action that maximizes the Q-function and finding $$Q_\phi$$ that minimizes the Bellman error, i.e., we will update the parameters $$\phi$$ of the q-function model per
+$$
+\phi \leftarrow \phi - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_\phi(s_i,a_i) - y_i) \\
+= \phi - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_\phi(s_i,a_i) - [r(s_t, a_t) + \gamma \max_\boldsymbol{a} Q_\phi^\pi (s_{t+1}, a_{t+1})])
+$$
 
-$$ \phi \leftarrow - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_pi(s_i,a_i) - y_i) $$
+Our target value $$y_i$$ includes the term that we are differentiating against. This slows down learning because the target value $$y_i$$ being correlated with what we are trying to improve $$Q_\phi$$ does not help the model converge very well! As a symptom of this correlation, $$Q_\phi$$ can sometimes overestimate the q-values of certain actions.
 
-Let's replace $$y_i$$ with what we defined earlier.
+We can solve this issue by using another q-function $$Q_{\phi'}$$ in the target value. We call this $$Q_{\phi'}$$ the target network. So instead of using the same network to both calculate the target value and optimize, we use two different ones. Once in a while, we will swap these two networks, so that $$Q_\phi$$ becomes $$Q_{\phi'}$$, and vice versa.
 
-$$ \phi \leftarrow - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_\phi(s_i,a_i) - [r(s_t, a_t) + \gamma \max_\boldsymbol{a} Q^\pi (s_{t+1}, a_{t+1})]) $$
-
-Our target value includes the term that we are differentiating against. This slows down learning because the target value $$y_i$$ being correlated with what we are trying to improve $$Q_\phi$$. As a symptom of this correlation, $$Q_\phi$$ can also overestimate the q-values of certain actions.
-
-We can solve this issue by using another Q-function $$Q_{\phi'}$$ that we use just to calculate the target value. We call this $$Q_{\phi'}$$ the target network. So instead of using the same network to both calculate the target value and optimize, we can use two different ones. Once in a while, we will swap these two networks, so that $$Q_\phi$$ becomes $$Q_{\phi'}$$, and vice versa.
-
-Yet another trick to reduce correlation between $$Q_\phi$$ and $$y_i$$, we can use the policy of $$Q_\phi$$ in calculating $$y_i$$ instead of $$Q_{\phi'}$$, even though it's calculated with $$Q_\phi$$, i.e.,
+Yet another trick to reduce correlation between $$Q_\phi$$ and $$y_i$$ is using the action per $$Q_\phi$$ in calculating $$y_i$$ instead of $$Q_{\phi'}$$, even though the value itself is still calculated with $$Q_{\phi'}$$, i.e.,
 
 $$y_t = r(s_t, a_t) + \gamma \max_{\boldsymbol{a_{t+1}}} Q_{\phi'} (s_t, \mathop{\operatorname{arg\,max_{\boldsymbol{a_{t+1}}}}}Q_\phi(s_{t+1}, a_{t+1}))$$
 
 
 #### Off-policy Sampling
 
-Q-function algorithm is an off-policy algorithm; this means that we don't use the algorithm's policy to generate data that we train with. One effective way to implement this is to use a replay buffer. You generate data by sampling with some policy and put in the replay buffer $$B$$. During the training, you sample a batch from the buffer uniformly. This will allow the samples to be not correlated, and when you update the $$Q_\phi$$, you will have multiple samples in the batch, allowing the gradient variance to stay low.
+Q-function algorithm is an off-policy algorithm; this means that we don't use the algorithm's policy to generate data that we train with. One effective way to implement this is to use a replay buffer. You generate data by sampling with some policy and put them in the replay buffer $$B$$. During the training, you sample a batch from the buffer uniformly. This will allow the samples to be not correlated. You also update the $$Q_\phi$$ with a batch of data, allowing the gradient variance to stay low.
 
 #### Training Steps
 
-Now we're fully ready to put the training steps.
+Now we're fully ready to put together what we've learned so far and outline the training steps.
 
 1. update target network parameters $$\phi' \leftarrow \phi$$
      - Repeat $$N$$ times
@@ -165,6 +171,6 @@ def batch_train(observation_dim: int,
 #### Pros and Cons
 Q-learning is beneficial since it has lower variance updates; you don't need as many samples to improve your model as, e.g., a policy gradient method would require.
 
-One drawback is DDQN as I've described above will not work well with problems with continuous action. Note the $$max$$ function in the target value $$r(s_t, a_t) + \gamma \max_{\boldsymbol{a_{t+1}}} Q_{\phi'}$$. Trying to taking the max of some continuous will require infinite samples! You could ignore and just take the maximum of what you've sampled so far, but that will not be very accurate. There are a few options to improve this situation with better optimization or learning an approximation of this problematic function $$max$$ that I won't discuss in detail here.
+One drawback is q-learning as I've described above will not work well with problems with continuous action. Note the $$max$$ function in the target value $$r(s_t, a_t) + \gamma \max_{\boldsymbol{a_{t+1}}} Q_{\phi'}$$. Trying to find the max value in some continuous space will require infinite samples! You could ignore and just take the maximum of what you've sampled so far, but that will not be very accurate. There are a few options here to allow you to still use q-learning, such as with better optimization or learning an approximation of this problematic function $$max$$, but further details will be a topic for another post.
 
 

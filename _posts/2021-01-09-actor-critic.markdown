@@ -5,49 +5,59 @@ categories: reinforcement_learning
 ---
 {% include math.html %}
 
-In my previous [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %}) on reinforcement learning (RL) based on rewards, I mentioned the true objective of reinforcement function is find the parameters of your policy such that you maximize the expected value of the total rewards, i.e., $$\mathop{\operatorname{arg\,max_\theta}} E_{\tau\sim p_\theta(\tau)} \sum_t r(s_t, a_t)$$. For example, you have come up with some architecture for your model, e.g., your neural net, and then during the training phase, you need to find the right numbers for the matrices (parameters). In each optimization step during the training, you need to update your parameters a bit by bit based on your objective function. Our true object has quite a few values to calculate, so computer scientists have come up with some other objective functions that are nicer to use. // list why value/q functions.
+The actor-critic method is one of the methods in reinforcement learning (RL), in which we learn both the value function and the policy. In the policy gradient method, we learned only the policy and relied on a multitude of observations for reward estimation. In Q-learning (to be discussed in the later post), we estimate only the reward, while keeping the policy.
 
+I will discuss the actor-critic method by comparing against the policy gradient method (discussed in [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %})), so getting a bit of refresher on policy gradient will make this post easier to understand!
 
-Let's define a couple of value functions.
+The policy gradient method often suffers from high variance during training. The actor-critic method attempts at reducing the variance by fitting functions that are components of the true objective. But first, let's define a couple of functions.
 
 ## Q-function
 
-*Q-function ($$Q^\pi(s_t, a_t)$$)* provides total reward from taking $$a_t$$ in $$s_t$$ when you roll out the action-state pairs according to policy $$\pi$$.
+**Q-function ($$Q^\pi(s_t, a_t)$$)** provides the expected cumulative reward from time $$t$$ when taking action $$a_t$$ in state $$s_t$$ as you roll out the future action-state pairs according to policy $$\pi$$.
 
-To help understanding the relationship of this to the RL objective, let me give you an example. If we knew the reward of taking action $$a_1$$ in state $$s_1$$, and understood the probability distribution of taking $$a_1$$ in $$s_1$$ and that of the state $$s_1$$, then, the RL objective can be rewritten as
+$$
+Q^\pi(s_t, a_t) = \sum_{t'=t}^T E_{\pi_\theta} [r(s_{t'}, a_{t'})|s_t, a_t]
+$$
 
-$$E_{s_1 \sim p(s_1)} [E_{a_1 \sim \pi(a_1 \vert s_1)}[Q(s_1, a_1) \vert s_1]]$$
+The true RL objective is to maximize the expected total rewards, and can be rewritten in terms of Q function as
 
-This will be an important fact for motivating Q-learning later.
+$$
+E_{\tau \sim p_\theta(\tau)} \Big[ \sum_{t=1}^T r(s_t, a_t) \Big] \\
+= E_{s_1 \sim p(s_1)} [E_{a_1 \sim \pi(a_1 \vert s_1)}[Q(s_1, a_1) \vert s_1]]
+$$
 
 ## Value function
 
-*Value function ($$V(s_t)$$)* provides total reward from $$s_t$$. Note that it doesn't depend on the action, so that it should sum Q-values over all the possible actions per $$a_t \sim \pi(a_t \vert s_t)$$. The RL objective can be rewritten as
+**Value function ($$V(s_t)$$)** provides the expected cumulative reward from $$s_t$$.
+
+$$
+V^\pi(s_t, a_t) = \sum_{t'=t}^T E_{\pi_\theta} [r(s_t', a_t') | s_t]
+$$
+
+The RL objective can be rewritten in terms of $$V$$ is
 
 $$E_{s_1 \sim p(s_1)}[V^\pi(s_1)]$$
 
-Note that your value function is an expected value of q-values.
+From the earlier equality mentioned in Q-function, we can also see
 
 $$V^\pi(s) = E_{a_t \sim \pi_\theta (a_t \vert s_t)}[Q(s_t, a_t)]$$
 
 ### Actor-Critic
 
-The Actor-Critic method derives from the policy gradient, but we fit a model for the part of the gradient that is responsible for rewards so as to reduce the variance.
-
-Recall in the policy gradient method (related [post]({% post_url 2020-12-21-policy-gradient %})), the gradient that we used to update the policy parameters is
+Recall in the policy gradient variant with rewards-to-go and baseline, the gradient that we used to update the policy parameters is
 
 $$
-\triangledown_\theta J(\theta) = \frac{1}{N} \sum_i \bigl( \sum_t \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) -  \frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_t', a_t') \bigr)
+\triangledown_\theta J(\theta) = \frac{1}{N} \sum_i \bigl( \sum_t \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) -  \frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) \bigr)
 $$
 
-Note that some parts of the above are equivalent to the value functions we just mentioned:
+Now that you know the definition of $$Q^\pi$$ and $$V^\pi$$, you should be able to see the expected values of the last terms are $$Q^\pi$$ and $$V^\pi$$, respectively.
 
 $$
-Q^\pi(s_t, a_t) = \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) \\
-V^\pi(s_t) = \frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'})
+Q^\pi(s_t, a_t) = E_{\pi_\theta} \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) \\
+V^\pi(s_t) = E_{\pi_\theta} \frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'})
 $$
 
-The RL objective cam be rewritten as
+The RL objective can be rewritten as
 
 $$
 \triangledown_\theta J(\theta) = \frac{1}{N} \sum_i \bigl( \sum_t \triangledown_\theta \log \pi_{\theta} (a_{i,t} \vert s_{i,t}) \bigr) \bigl( Q^\pi(s_t,a_t) - V^\pi(s_t) \bigr)
@@ -55,24 +65,27 @@ $$
 
 We call $$A^\pi(s_t, a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t)$$ **advantage**, a measure of how good $$a_t$$ is in terms of maximizing rewards relative to the average in that state.
 
-Recall Q-function is the total rewards from taking action $$a_t$$ in state $$s_t$$. We directly know the reward at $$t$$; we just call $$r(a_t, s_t)$$, but from $$t+1$$, the expected reward will be approximately $$V^\pi(s_{t+1})$$. Therefore, advantage function can be rewritten as
+Recall Q-function is the total rewards from taking action $$a_t$$ in state $$s_t$$. We directly know the reward at $$t$$; we just call $$r(a_t, s_t)$$, but from $$t+1$$, the expected reward should be $$V^\pi(s_{t+1})$$. Therefore, advantage function can be rewritten as
 
 $$
 A^\pi(a_t,s_t) = r(a_t, s_t) + V^\pi(s_{t+1}) - V^\pi(s_t)
 $$
 
-Now there's only one value function in our RL objective. That's great news, because we can fit a model to predict $$V^\pi$$ that would give a smoother gradient to $$J(\theta)$$. Using the Monte-Carlo method (fancy way to saying just sample a lot and take the average), our target is approximated as $$\frac{1}{N} \sum_i^N \sum_t^T r(a_{i,t}, s_{i,t})$$. We can sample the policy to get pairs of $$(s_t, y_{i,t})$$, where $$y_{i,t} = \sum_t^T r(a_t, s_t)$$. Since the value function is equivalent to the expected value of q-values, we can use use this $$y_{i,t}$$ directly and do a regression that minimizes $$\sum_i \left\lVert \hat{V}(s_i) - \sum_{t'=t}^T r\right\rVert^2 $$.
+Now there's only one value function in our RL objective. That's great news, because we can fit  just one value model to predict $$V^\pi$$. Having a model for $$V^\pi$$ should give a smoother gradient to $$J(\theta)$$. Our value target is approximated as $$\frac{1}{N} \sum_i^N \sum_t^T r(a_{i,t}, s_{i,t})$$. (Remember we used this value directly in $$J(\theta$$ in policy gradient? We are now using a model instead of using the value directly.) We can sample the policy to get pairs of $$(s_t,  \sum_t^T r(a_t, s_t))$$. Since the value function is equivalent to the expected value of q-values, we can use $$y_{i,t}$$ in estimating $$\hat{V}$$. The objective function in estimating $$V^\theta$$ is then
 
-Now we will switch between fitting on this value function ($$V^\pi$$), a.k.a., critic and improving the policy $$\pi$$, a.k.a., actor. The method name should make sense now because value function gives you the expected cumulative rewards given a state, thereby "criticizing" your policy, while the policy is one that determines what actions to take, thereby taking "actions".
+$$
+\left\lVert \hat{V}(s_t) - \sum_{t'=t}^T r\right\rVert^2
+$$
 
-During the training process, we switch back and forth between improving the critic by better estimating the expected total rewards at any given state AND improving the actor with the help of the better critic. The step-by-step process is
+During the actor-critic method, we switch between fitting on this value function ($$V^\pi$$), a.k.a., critic, and improving the policy $$\pi$$, a.k.a., actor. The method name makes sense; the value function tells you the expected rewards, effectively "criticizing" your policy, while the policy is one that determines what actions to take, thereby being an "actor" that acts upon the critic's criticism. During the training process, we switch back and forth between improving the critic AND improving the actor, and each one of their improvement should further help the other.
+
+The steps in each training cycle is
 
 1. generate sample pairs $$(s_i, a_i)$$ from $$\pi_\theta$$ and record the rewards
-2. fit the value function $$\hat{V}_\phi^\pi(s)$$ to the sum of rewards to go (q-value)
+2. fit the value function $$\hat{V}_\phi^\pi(s)$$ to the sum of rewards to go (q-values)
 3. estimate advantage $$\hat{A}^\pi(s_i, a_i) = r(a_t, s_t) + V^\pi(s_{t+1}) - V^\pi(s_t)$$
 4. calculate the gradient of the RL objective $$\triangledown_\theta J(\theta) = \sum_i \triangledown_\theta \log \pi_\theta(a_i\vert s_i) \hat{A}^\pi(s_i, a_i)$$
 5. Update the parameters of the model $$\theta \leftarrow \theta + \alpha \triangledown_\theta J(\theta)$$
-6. Repeat 1-6.
 
 What we've discussed so far in pseudo-code is
 ```python
@@ -113,21 +126,23 @@ def batch_train(observation_dim: int, action_dim: int, hidden_layer_dim: int, le
             actor_optimizer.step()
 ```
 
-For some detailed pytorch-specific explanation of the code, refer to the [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %}). `sample` function returns the results of the rollouts of your policy.
+To avoid repeating myself, refer to this [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %}) for the more "verbose" description of the code to make it easier to follow along, in case you're not so familiar with pytorch.
 
 #### Discount factor
-One common thing to see in estimating $$V^\pi(s)$$ is to discount the future. The usefulness of this becomes more apparent when your time horizon infinite.
+One common thing to see in estimating $$V^\pi(s)$$ is discounting the future. The usefulness of this becomes more apparent when your time horizon infinite.
 
-$$V^\pi(s) = E_{a \sim \pi} [\sum_{t=0}^\infinity r(s_t, a_t \vert s_0 = s)] $$
+$$V^\pi(s) = E_{a \sim \pi} \big[\sum_{t=0}^\infty r(s_t, a_t \vert s_0 = s)\big] $$
 
-In the above case, we will never finish finding out $$V^\pi$$. Introducing a discount rate $$\gamma$, the value function now becomes
+In the above case, we will never finish finding out $$V^\pi$$. Introducing a discount rate $$\gamma$$, the value function now becomes
 
-$$V^\pi(s) = E_{a \sim \pi} [\sum_{t=0}^\infinity \gamma^t r(s_t, a_t \vert s_0 = s)] $$
+$$V^\pi(s) = E_{a \sim \pi} \big[\sum_{t=0}^\infty \gamma^t r(s_t, a_t \vert s_0 = s)\big] $$
 
-and now our value function estimation will use the above as the target (step 2), and the advantage will also discount the next observation by $$\gamma$$, i.e., $$\hat{A}^\pi(s_i, a_i) = r(a_t, s_t) + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)$$
+where the rewards in the far future will be effectively zero. This also helps reducing variance even further because estimations in the farther future are less likely to be "correct".
+
+The advantage will also discount the next observation by $$\gamma$$, i.e., $$\hat{A}^\pi(s_i, a_i) = r(a_t, s_t) + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)$$
 
 #### Pros and Cons
-Actor-critic method provides lower variance than policy gradient method and tends to converge well. It's more **sample-efficient** in that you can converge to a model with fewer samples than a policy gradient method could be. But note that our actor is always sampling based on its own policy; this means that it may not take actions that could be potentially very good but are drastically different from what it has tried. (Such a method is called an on-policy algorithm, meaning it samples according to its policy.) That means your actor can be great at converging into the local maximum, but can be stuck and **not finding the global maximum**.
+The actor-critic method provides lower variance than the policy gradient method and tends to converge better. It's more **sample-efficient** in that your model could converge with fewer samples. But note that our actor is always sampling based on its own policy; this means that it may not take actions that could be potentially very good but are drastically different from what it has tried. (Such a method is called an on-policy algorithm, meaning it samples according to its policy.) That means your actor can be great at converging into some local maximum, but can be stuck in it and **not find the global maximum**.
 
-This leads well into Q-learning, which is an **off-policy** algorithm, another great method in reinforcement learning.
+This leads well into Q-learning, which is an **off-policy** algorithm, another great approach in reinforcement learning.
 
