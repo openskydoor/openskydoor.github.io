@@ -7,9 +7,9 @@ categories: reinforcement_learning
 
 The actor-critic method is one of the methods in reinforcement learning (RL), in which we learn both the value function and the policy. In the policy gradient method, we learned only the policy and relied on a multitude of observations for reward estimation. In Q-learning (to be discussed in the later post), we estimate only the reward, while keeping the policy.
 
-I will discuss the actor-critic method by comparing against the policy gradient method (discussed in [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %})), so getting a bit of refresher on policy gradient will make this post easier to understand!
+I will discuss the actor-critic method by comparing it against the policy gradient method (discussed in this [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %})), so getting a bit of refresher on policy gradient will make this post easier to understand!
 
-The policy gradient method often suffers from high variance during training. The actor-critic method attempts at reducing the variance by fitting functions that are components of the true objective. But first, let's define a couple of functions.
+The policy gradient method often suffers from high variance during training. The actor-critic method attempts to reduce the variance by fitting functions that are components of the true objective. But first, let's define a couple of functions.
 
 ## Q-function
 
@@ -53,8 +53,8 @@ $$
 Now that you know the definition of $$Q^\pi$$ and $$V^\pi$$, you should be able to see the expected values of the last terms are $$Q^\pi$$ and $$V^\pi$$, respectively.
 
 $$
-Q^\pi(s_t, a_t) = E_{\pi_\theta} \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}) \\
-V^\pi(s_t) = E_{\pi_\theta} \frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'})
+Q^\pi(s_t, a_t) = E_{\pi_\theta} (\sum_{t'=t}^T r(s_{i,t'}, a_{i,t'})) \\
+V^\pi(s_t) = E_{\pi_\theta} (\frac{1}{N}\sum_i^N \sum_{t'=t}^T r(s_{i,t'}, a_{i,t'}))
 $$
 
 The RL objective can be rewritten as
