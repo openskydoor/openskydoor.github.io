@@ -4,8 +4,12 @@ title: About
 permalink: /about/
 ---
 
-I'm a software engineer at Twitch; previously at Opendoor, Periscope Data (acquired by Sisense), and Microsoft; previously a student at University of Illinois at Urbana-Champagne (M.S.), and Duke University (B.S.).
+I'm a software engineer at Twitch working on Search. Previously I was engineering real estate valuation models at Opendoor, building faster and better analytics platform at Periscope Data (acquired by Sisense), and doing things (it's been a while now..) at Microsoft.
 
-My blog is mostly my study notes aimed at explaining things at the level of software engineers who forgot most of university-level math...
+Before anyone was willing to pay me to do stuff, I was a student at University of Illinois at Urbana-Champagne (M.S.), and at Duke University (B.S.).
 
-Before computer science became my past time, music writing was... ![music](https://soundcloud.com/sky-soyoun-lee)
+I like building and studying all things related to machine learning, and depending on the season, other software engineering topics...
+
+My blog is mostly aimed at explaining things at the level of software engineers who forgot most of university-level math..
+
+Before computer science became my past time, music writing was... awkwardly presenting my [soundcloud link](https://soundcloud.com/sky-soyoun-lee).
