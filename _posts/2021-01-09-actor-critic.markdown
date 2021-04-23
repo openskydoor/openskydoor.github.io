@@ -71,19 +71,19 @@ $$
 A^\pi(a_t,s_t) = r(a_t, s_t) + V^\pi(s_{t+1}) - V^\pi(s_t)
 $$
 
-Now there's only one value function in our RL objective. That's great news, because we can fit  just one value model to predict $$V^\pi$$. Having a model for $$V^\pi$$ should give a smoother gradient to $$J(\theta)$$. Our value target is approximated as $$\frac{1}{N} \sum_i^N \sum_t^T r(a_{i,t}, s_{i,t})$$. (Remember we used this value directly in $$J(\theta$$ in policy gradient? We are now using a model instead of using the value directly.) We can sample the policy to get pairs of $$(s_t,  \sum_t^T r(a_t, s_t))$$. Since the value function is equivalent to the expected value of q-values, we can use $$y_{i,t}$$ in estimating $$\hat{V}$$. The objective function in estimating $$V^\theta$$ is then
+Now there's only one value function in our RL objective. That's great news, because we can fit  just one value model to predict $$V^\pi$$. Having a model for $$V^\pi$$ should give a smoother gradient to $$J(\theta)$$. Our value target is approximated as $$\frac{1}{N} \sum_i^N \sum_t^T r(a_{i,t}, s_{i,t})$$. (Remember we used this value directly in $$J(\theta)$$ in policy gradient? We are now using a model instead of using the value directly.) We can sample the policy to get pairs of $$(s_{it},  \sum_t^T r(a_{it}, s_{it}))$$. Since the value function is equivalent to the expected value of q-values, we can use $$\sum_t^T r(a_{i,t}, s_{i,t})$$s to estimate $$\hat{V}$$. You can fit $$V^\pi$$ by minimizing
 
 $$
-\left\lVert \hat{V}(s_t) - \sum_{t'=t}^T r\right\rVert^2
+\mathcal{L}(\phi) = \left\lVert \hat{V_\phi}(s_t) - \sum_{t'=t}^T r\right\rVert^2
 $$
 
-During the actor-critic method, we switch between fitting on this value function ($$V^\pi$$), a.k.a., critic, and improving the policy $$\pi$$, a.k.a., actor. The method name makes sense; the value function tells you the expected rewards, effectively "criticizing" your policy, while the policy is one that determines what actions to take, thereby being an "actor" that acts upon the critic's criticism. During the training process, we switch back and forth between improving the critic AND improving the actor, and each one of their improvement should further help the other.
+During the actor-critic method, we switch between fitting on this value function ($$V^\pi$$), a.k.a., critic, and improving the policy $$\pi$$, a.k.a., actor. The method name should make sense now; the value function tells you the expected rewards, effectively "criticizing" your policy, while the policy is one that determines what actions to take, thereby being an "actor" that acts upon the critic's criticism. During the training process, we switch back and forth between improving the critic AND improving the actor, and each one of their improvement should further help each other.
 
 The steps in each training cycle is
 
-1. generate sample pairs $$(s_i, a_i)$$ from $$\pi_\theta$$ and record the rewards
+1. generate sample pairs $$(s_{i,t}, a_{i,t})$$ from $$\pi_\theta$$ and record the rewards
 2. fit the value function $$\hat{V}_\phi^\pi(s)$$ to the sum of rewards to go (q-values)
-3. estimate advantage $$\hat{A}^\pi(s_i, a_i) = r(a_t, s_t) + V^\pi(s_{t+1}) - V^\pi(s_t)$$
+3. estimate advantage $$\hat{A}^\pi(s_{i,t}, a_{i,t}) = r(a_{i,t}, s_{i,t}) + V_\phi^\pi(s_{i,t+1}) - V_\phi^\pi(s_{i,t})$$
 4. calculate the gradient of the RL objective $$\triangledown_\theta J(\theta) = \sum_i \triangledown_\theta \log \pi_\theta(a_i\vert s_i) \hat{A}^\pi(s_i, a_i)$$
 5. Update the parameters of the model $$\theta \leftarrow \theta + \alpha \triangledown_\theta J(\theta)$$
 
@@ -99,10 +99,10 @@ def sample(policy: nn.Module) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor,
 
 def batch_train(observation_dim: int, action_dim: int, hidden_layer_dim: int, learning_rate: float):
     actor = nn.Sequential(nn.Linear(observation_dim, hidden_layer_dim),
-                            nn.Linear(hidden_layer_dim, action_dim))
+                            nn.Linear(hidden_layer_dim, action_dim), nn.Tanh())
     actor_optimizer = optim.Adam(actor.parameters(), learning_rate)
     critic = nn.Sequential(nn.Linear(observation_dim, hidden_layer_dim),
-                            nn.Linear(hidden_layer_dim, 1))
+                            nn.Linear(hidden_layer_dim, 1), nn.Tanh())
     critic_optimizer = optim.Adam(critic.parameters(), learning_rate)
 
     for _ in range(NUM_STEPS):
@@ -120,16 +120,16 @@ def batch_train(observation_dim: int, action_dim: int, hidden_layer_dim: int, le
 
         for _ in range(NUM_ACTOR_UPDATES_PER_STEP):
             acts_given_obs = actor(observations)
-            actor_loss = -torch.mean(torch.mul(acts_given_obs.log_prob(actions), advantage)
+            actor_loss = -torch.mean(torch.mul(acts_given_obs.log_prob(actions), advantage.detach())
             actor_optimizer.zero_grad()
             actor_loss.backwards()
             actor_optimizer.step()
 ```
 
-To avoid repeating myself, refer to this [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %}) for the more "verbose" description of the code to make it easier to follow along, in case you're not so familiar with pytorch.
+To avoid repeating myself, refer to this [post]({% post_url 2020-12-20-reinforcement-learning-primer-rewards %}) for a more "verbose" description of the code to make it easier to follow along, in case you're not so familiar with pytorch.
 
 #### Discount factor
-One common thing to see in estimating $$V^\pi(s)$$ is discounting the future. The usefulness of this becomes more apparent when your time horizon infinite.
+One common thing to see in estimating $$V^\pi(s)$$ is discounting the future. The usefulness of this becomes more apparent when your time horizon is infinite.
 
 $$V^\pi(s) = E_{a \sim \pi} \big[\sum_{t=0}^\infty r(s_t, a_t \vert s_0 = s)\big] $$
 

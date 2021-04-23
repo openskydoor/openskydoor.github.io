@@ -32,7 +32,7 @@ In the actor-critic method, we use $$A^\pi$$ to nudge the policy to move in the 
 #### Bellman equation
 Bellman equation is a recursive formula for q-function.
 
-Recall the identity:
+Recall the identity, if using the discount factor $$\gamma$$:
 
 $$
 Q^\pi(s_t, a_t) = r(s_t, a_t) + \gamma V^\pi(s_{t+1})
@@ -55,7 +55,7 @@ Let's take a closer look at our $$Q_\phi$$ gradient.
 
 $$
 \phi \leftarrow \phi - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_\phi(s_i,a_i) - y_i) \\
-= \phi - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_\phi(s_i,a_i) - [r(s_t, a_t) + \gamma \max_\boldsymbol{a} Q_\phi^\pi (s_{t+1}, a_{t+1})])
+= \phi - \alpha \frac{dQ_\phi}{d\phi} (s_i,a_i)(Q_\phi(s_i,a_i) - [r(s_t, a_t) + \gamma \max_\boldsymbol{a} Q_\phi (s_{t+1}, a_{t+1})])
 $$
 
 Our target value $$y_i$$ includes the term that we are differentiating against. This slows down learning because the target value $$y_i$$ being correlated with what we are trying to improve $$Q_\phi$$ does not help the model converge very well! As a symptom of this correlation, $$Q_\phi$$ can sometimes overestimate the q-values of certain actions.
@@ -79,7 +79,7 @@ Now we're fully ready to put together what we've learned so far and outline the 
      - Repeat $$N$$ times
     2. collect samples, add to the replay buffer $$B$$
          - Repeat $$K$$ times
-        3. sample a batch data $$(s, a, s', r)$$ from $$B$$
+        3. sample a batch of $$(s, a, s', r)$$ from $$B$$
         4. update the parameter $$\phi \leftarrow \phi - \alpha \frac{dQ_\phi}{d\phi} (s_t,a_t)(Q_\phi(s_t,a_t) - [r(s_t, a_t) + \gamma \max_{\boldsymbol{a_{t+1}}} Q_{\phi'} (s_t, \mathop{\operatorname{arg\,max_{\boldsymbol{a_{t+1}}}}}Q_\phi(s_{t+1}, a_{t+1}))])$$
 
 Here's the pseudo-code:
@@ -125,7 +125,7 @@ class DoubleDQNCritic:
         q_t_values = torch.gather(qa_t_values, 1, actions.unsqueeze(1)).squeeze(1)
 
         # get target q values for all actions
-        qa_tp1_target_values = self.q_net_target(next_observations)
+        qa_tp1_target_values = self.q_net_target(next_observations)v].detach()
         # get target q values for actions that policy per q_net would have taken
         q_tp1_target_values = (torch.gather(
                                 qa_tp1_target_values,
