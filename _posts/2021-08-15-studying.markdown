@@ -1,0 +1,33 @@
+---
+layout: post
+title: "Engineer Ruminates on Management (3) - On Learning"
+categories: others
+---
+
+## ICs Must Study
+
+### What It Takes to Be a Software Engineer
+
+There are a lot of people that become software engineers after having completed a bootcamp program these days. I did not study computer science for my undergraduate degree, but took several computer science classes as part of my field. I remember studying for software engineering interviews for the first time and thinking that I was learning the materials for the first time. That might have been not true; I just forgot most of CS 100 🤓. In any case, I felt like most of my experience in computer science thus far was irrelevant to getting a job (I took classes like OS, CUDA, computer architecture, database systems). The tech industry knows this and now you can study for 6 months on some bootcamp program and get the same job as these suckers who studied for four years! (Actually, probably many other industries know this, but they feel too self-important to admit it and refuse to remove the barrier of entry.)
+
+A lot of times your job as a software engineer is about executing well. Occasionally you research and study. Sometimes in order to solve a problem, you try solutions based on what you already know a few times. You finally decide to read some stuff online and decide you need to try this new stuff that you have never used before. Let's say it's some transformer-based model. You feel the pressure to execute, so you try to do the minimum work to use them. After all, frameworks like Torch and Tensorflow make them _almost_ a blackbox. As you are debugging, you start understanding them better. No one else in the team knows about transformers, so you become their go-to and increase your bus factor. You spent months doing this work, so you look like even a bigger hero to them. You profit.
+
+### What Companies Are Willing To Pay For You To Study
+
+The point I'm trying to draw is that while becoming an engineer does not require you to know anything beyond Leetcode and basic data structures, becoming a 10x engineer requires you to know all the other things. No one becomes a 10x engineer by executing something ten times faster. You become one by introducing a more productive solution faster. You can sometimes afford to spend time learning things as different needs arise, but that search path is inefficient, because you have not indexed the right things yet! Even in this case, the amount of time you can afford to spend will vary; most companies probably won't like you to take a semester-long course at Stanford to do this; they might let you take an easier online class, but would prefer you can just figure things out in a week by reading stuff online. (Seriously though, thank you internet and all the nerds who publish stuff online.) In the worst case, the pressure to deliver fast is too much and you do not get to learn anything in any meaningful depth. The way to become a 10x engineer in this environment is to just be a nerd that spends your free time doing this outside work. We celebrate such engineers. Hiring them is important, since what makes them successful is not in a manager's purview (unless it's a very toxic culture..)
+
+Is this a fair assessment? No, some companies want to encourage learning and have dedicated learning budget. But it's your discretion to request it. At one of my previous employers, my manager told me I had to justify that it's relevant to my work. There was no way GANs were relevant to my day job, so I didn't bother. In other places, the manager said he would approve as long as it's under the yearly limit. In both of these cases, it's clear the company is not keen on paying me the wage for the necessary time for learning any hard material in depth. Also, typically it's not the lack of money that prevents someone from learning; it's the sense that it's optional and should be outside your work hours that makes us all prone to stop learning. Therefore, learning budget is not exactly an apt solution.
+
+### This _Could_ Be Cheaper Than You Might Think
+
+Here's an idea. Instead of celebrating the 10x engineers and just _kind of_ supporting people to learn, why don't we nurture 10x engineers systematically by forcing them to study? This might sound like an expensive thing to do, but most of the time, it does not have to be. Here's an example from my experience. It has long been established that Active Record callbacks in Rails are one of those "just don't" things, but in the relatively recently-started companies that I worked at have their Rails code littered with callbacks throughout written by very senior engineers. I know firsthand at least one of them has failed to refactor and migrate effectively because it's just too hard/expensive to know what is happening in your code. The amount of time you needed to study to prevent years of productivity loss? Less than one hour of online tech blog reading. Force your engineers to spend time to study. You can have people brainstorm ideas on what to learn and each person share their learning. The goal is to have a diversity of knowledge in somewhat tangential and somewhat relevant, but not urgently necessary domains. Having two people know callbacks are bad isn't twice as productive, so having individuals in the team learn different things makes learning somewhat cheaper. Sharing your learning with some presentation also makes it easier to justify that this is part of the ICs' job. This process might feel tedious and get de-prioritized frequently if you had tight deadlines or pressure to deliver, but I think this might have better ROI than relying on luck to hire a 10x engineer with lots of money. (I'd like to note that this is probably most speculative idea in this essay. I don't know that it works AT ALL... In fact, I don't know if any of my ideas are sane, but I think this is the most fishy and risky idea I mention here.)
+
+In this series:
+
+- [Write More Effectively]({% post_url 2021-08-13-managing-writing%})
+
+- [Remove Hierarchy of Opportunities]({% post_url 2021-08-14-hierarchy%})
+
+- [ICs Must Study]({% post_url 2021-08-15-studying%})
+
+- [Measure Concrete Actions of ICs, Micromanage ICs' Career]({% post_url 2021-08-16-measuring%})
