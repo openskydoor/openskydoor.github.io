@@ -1,0 +1,220 @@
+---
+layout: post
+title: "Marriage Decision"
+categories: miscellaneous
+---
+
+{% include chart.html %}
+
+I live with a partner who I hope to be my life-long companion. I also have a child with him. But we are not married. Like many people, I have imagined myself to be married at some point in my life since I was very young, but when I first learned of divorce laws, I quickly realized that marriage may not be in my best interest.
+
+A frequent response I hear when I talk about this is that
+
+**1. I'm ridiculous for considering divorce when I consider marriage.**
+
+I presume most people have some kind of insurance. It's no different than getting an insurance. Nobody gets insurance to get hurt or to make a loss. If you think divorce has a place in the world so that people don't have to be tied to a convention that makes them unsafe or unhappy, I don't know why this should be an uncomfortable thing to think about for yourself. It's a pity that some people think that even thinking about divorce can negatively affect their relationship. If anything, just like thinking about getting an insurance makes me review my current behavior that mitigates the risks, it should encourage a positive change in the relationship.
+
+**2. The fact that you're married is what keeps two people together. It's a show of commitment.**
+
+First of all, divorce rate in the US is more than 40%, so marriage really has an expected value of only 60% commitment. In fact, if it's a second marriage<sup>[forbes](https://www.forbes.com/advisor/legal/divorce/divorce-statistics/)</sup>, it's more likely to end in a divorce than not. You might say a counterfactual "separation" rate would be even higher than that, if they didn't get married. I think that is highly plausible. Staying with one partner is simply not my primary goal, however. I am not particularly keen on using marriage as a tool to keep my relationship together. I don't deny that there is some psychological safety and warmth that people associate with marriage, myself included. But based on the statistics, using marriage as a show of commitment is a rather weak signal. I do have a better signal, though. When my partner and I have conflicts, he converses in an attitude that keeps us together in a healthy relationship: no blame or contempt. I simply don't think, at the moment, I'll have more psychological safety if he asks for my hand in marriage tomorrow.
+
+These would be my response when people ask me "why not married", because I presume they are asking these questions based on their own factors of marriage consideration. But let me discuss what *my actual* factors in considering marriage.
+
+A few years ago I heard from a friend that in the province of British Columbia, if you want a divorce, you are required to have a separation period, and a spouse can reject divorce by not agreeing to separate. I was mindblown that a state could have a such heavy-handed policy on something that seems like a rather private matter. Since then, I wanted to learn more about what I'm actually agreeing to, if I get married.
+
+Marriage and divorce rights can be really meaningful for some people. I see many rights related to marriage per [wikipedia](https://en.wikipedia.org/wiki/Rights_and_responsibilities_of_marriages_in_the_United_States). I feel relatively indifferent about these rights, largely because at the moment, my partner and I both have a job that allows us to be financially independent on our own. While indifferent, I am not opposed to having these rights or my husband having them. For example, sponsoring for immigration benefits, domestic violence protection orders, and many more could become important sometime.
+
+Regarding the divorce rights, I'm a bit more skeptical. For example, some states require a separation period before no-fault divorce, some require mutual consent for no-fault divorce, etc. Maybe you think you have no business living in one of these states, like Mississippi. If so, how about property division? When you divorce, several states presume all the assets accrued during the marriage are to be divided equally, i.e., half to each spouse. I have lived in two of such states, California and Washington. I joke to my partner if he becomes insanely rich, I'm going to ask him to marry me. Sure I can write a prenup agreement. But just walking away from the relationship with no talk over property division seems ideal, based on our current relationship and assuming the division of household involvement and childcare has been fair to both of our standards. So why pay a lawyer and also have the risk of the prenup getting nullified (which is not too hard to do so apparently)?
+
+These sound all hypothetical, so maybe if my partner and I really love each other, the divorce rights won't matter, right? And surely all the rights given to us by being married are just a bonus. However, what if being married means you're losing part of your income? Per so-called ["marriage penalty"](https://en.wikipedia.org/wiki/Marriage_penalty) in the US system, dual-income married people sometimes have to pay more taxes than if they filed as single. This is not an argument for advocating lower taxes; I'm simply pointing out that for some of you, there is a short-term financial cost of being married. This knowledge is surprisingly uncommon. One time, my coworkers and I were talking about marriage penalty during lunch, and the only married coworker on the table (who probably more making more than anyone in salary in the same table then based on his title) was saying that it doesn't apply to him because he and his wife file separately. We quickly corrected him that the rates are different whether you file separately or not, because he's married. Whether you pay more taxes depends on how much each spouse makes. The following slider illustrates this, based on the 2024 tax brackets.
+<style>
+.slidecontainer {
+  width: 50%;
+  padding: 10px 0;
+}
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 25px;
+height: 25px;
+border-radius: 50%;
+background: #04AA6D;
+cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+width: 25px;
+height: 25px;
+border-radius: 50%;
+background: #04AA6D;
+cursor: pointer;
+}
+
+#my-bar .bar {
+  --labels-size: 200px;
+}
+
+.number-input {
+    font-size: 16px;
+    width: 120px;
+}
+
+
+</style>
+<div align="center">
+<div align="center">
+<div>Income</div>
+<div style="display: flex;">
+<div style="flex: 50%">Spouse 1 Income: $<input class="number-input" type="number" id="spouseOneIncome" value="100000" min="0"></div>
+<div style="flex: 50%">Spouse 2 Income: $<input class="number-input" type="number" id="spouseTwoIncome" value="100000" min="0"></div>
+</div>
+
+<div class="slidecontainer">
+  <input type="range" min="0" max="100" value="50" class="slider" id="division">
+  <p><b>Income Split</b> <span id="sliderValue"></span>:<span id="oppositeSliderValue"></span></p>
+</div>
+</div>
+
+<div align="center">
+<div>Taxes</div>
+<div id="my-bar">
+<table class="charts-css bar show-heading show-labels data-spacing-10 show-primary-axis show-data-axes data-outside">
+<tbody>
+<tr> <th scope="col">Filing Jointly</th><td id="jointly" style="--size: 0.5;"><span class="data outside" id="totalTaxJointly"></span></td> </tr>
+<tr><th scope="col">Filing Separately</th><td id="separately" style="--size: 1.0;"><span class="data outside" id="totalTaxSeparate"></span></td> </tr>
+<tr><th scope="col">Filing as Singles</th><td id="single" style="--size: 0.7;"><span class="data outside" id="totalTaxSingle"></span></td></tr>
+</tbody></table>
+</div>
+
+<div style="display: flex;">
+<table class="charts-css bar reverse data-spacing-10 show-primary-axis show-data-axes hide-data">
+<tbody>
+<tr><td id="positive-difference" style="--size: 0.7;"><span id="positive-value"></span></td></tr>
+</tbody></table>
+
+<table class="charts-css bar hide-data data-spacing-10 show-primary-axis show-data-axes">
+<tbody>
+<tr><td id="negative-difference" style="--size: 0.7;"><span id="negative-value"></span></td></tr>
+</tbody></table>
+</div>
+<div><span id="difference"></span></div>
+<script>
+let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+});
+var slider = document.getElementById("division");
+var spouseOneIncome = document.getElementById("spouseOneIncome");
+var spouseTwoIncome = document.getElementById("spouseTwoIncome");
+var numberInput = document.getElementsByClassName("number-input");
+var sliderValue = document.getElementById("sliderValue");
+var oppositeSliderValue = document.getElementById("oppositeSliderValue");
+var totalTaxJointly = document.getElementById("totalTaxJointly");
+var totalTaxSingle = document.getElementById("totalTaxSingle");
+var totalTaxSeparate = document.getElementById("totalTaxSeparate");
+var jointlyBar = document.getElementById("jointly");
+var singleBar = document.getElementById("single");
+var separatelyBar = document.getElementById("separately");
+var negativeDifferenceBar = document.getElementById("negative-difference");
+var negativeDifferenceValue = document.getElementById("negative-value");
+var positiveDifferenceBar = document.getElementById("positive-difference");
+var positiveDifferenceValue = document.getElementById("positive-value");
+var differenceString = document.getElementById("difference");
+function filingSeparately(income) {
+    // console.log("separately")
+    // console.log(Math.round(Math.min(income, 11600) * 0.10))
+    // console.log(Math.round(Math.max(0, Math.min(income - 11600, 47150 - 11600)) * 0.12))
+    // console.log(Math.round(Math.max(0, Math.min(income-47151, 100525 - 47151))* 0.22))
+    // console.log(Math.round(Math.max(0, Math.min(income-100525, 191950-100525)) * 0.24))
+    // console.log(Math.round(Math.max(0, Math.min(income-191950, 243725-191950)) * 0.32))
+    // console.log(Math.round(Math.max(0, Math.min(income-243725, 365600-243725)) * 0.35))
+    // console.log(Math.round(Math.max(0, income-365600) * 0.37))
+    return Math.max(0, Math.round(Math.min(income, 11600) * 0.10) + Math.round(Math.max(0, Math.min(income - 11600, 47150 - 11600)) * 0.12) + Math.round(Math.max(0, Math.min(income-47151, 100525 - 47151))* 0.22) + Math.round(Math.max(0, Math.min(income-100525, 191950-100525)) * 0.24) + Math.round(Math.max(0, Math.min(income-191950, 243725-191950)) * 0.32) + Math.round(Math.max(0, Math.min(income-243725, 365600-243725)) * 0.35) + Math.round(Math.max(0, income-365600) * 0.37))
+}
+function filingSingle(income) {
+    return Math.max(0, Math.round(Math.min(income, 11600) * 0.10) + Math.round(Math.max(0, Math.min(income - 11600, 47150 - 11600)) * 0.12) + Math.round(Math.max(0, Math.min(income-47151, 100525 - 47151))*0.22) + Math.round(Math.max(0, Math.min(income-100525, 191950-100525)) * 0.24) + Math.round(Math.max(0, Math.min(income-191950, 243725-191950)) * 0.32) + Math.round(Math.max(0, Math.min(income-243725, 609350-243725)) * 0.35) + Math.round(Math.max(0, income-609350) * 0.37))
+}
+function filingJointly(income) {
+    // console.log("jointly")
+    // console.log(Math.round(Math.min(income, 23200) * 0.10))
+    // console.log(Math.round(Math.max(0, Math.min(income - 23200, 94300 - 23200)) * 0.12))
+    // console.log(Math.round(Math.max(0, Math.min(income-94300, 201050 - 94300))* 0.22))
+    // console.log(Math.round(Math.max(0, Math.min(income-201050, 383900-201050)) * 0.24))
+    // console.log(Math.round(Math.max(0, Math.min(income-383900, 487450-383900)) * 0.32))
+    // console.log(Math.round(Math.max(0, Math.min(income-487450, 731200-487450)) * 0.35))
+    // console.log(Math.round(Math.max(0, income-731200) * 0.37))
+    return Math.max(0, Math.round(Math.min(income, 23200) * 0.10) + Math.round(Math.max(0, Math.min(income - 23200, 94300 - 23200)) * 0.12) + Math.round(Math.max(0, Math.min(income-94300, 201050 - 94300))* 0.22) + Math.round(Math.max(0, Math.min(income-201050, 383900-201050)) * 0.24) + Math.round(Math.max(0, Math.min(income-383900, 487450-383900)) * 0.32) + Math.round(Math.max(0, Math.min(income-487450, 731200-487450)) * 0.35) + Math.round(Math.max(0, income-731200) * 0.37))
+}
+function totalTaxUpdate() {
+    const totalIncome = parseInt(spouseOneIncome.value) + parseInt(spouseTwoIncome.value);
+    const separateTotal = filingSeparately(spouseOneIncome.value-14600) + filingSeparately(spouseTwoIncome.value-14600);
+    const singleTotal = filingSingle(spouseOneIncome.value-14600) + filingSingle(spouseTwoIncome.value-14600);
+    const jointTotal = filingJointly(totalIncome - 29200);
+    const maxValue = totalIncome * 0.37;
+    const minMarriage = Math.min(jointTotal, separateTotal);
+    singleBar.style = `--size: ${singleTotal/maxValue};`
+    jointlyBar.style = `--size: ${jointTotal/maxValue};`
+    separatelyBar.style = `--size: ${separateTotal/maxValue};`
+    totalTaxSeparate.innerHTML = `${USDollar.format(separateTotal)}`;
+    totalTaxSingle.innerHTML = `${USDollar.format(singleTotal)}`;
+    totalTaxJointly.innerHTML = `${USDollar.format(jointTotal)}`;
+    const difference = minMarriage - singleTotal;
+    if (difference < 0) {
+        negativeDifferenceBar.style = `--size: ${2*Math.abs(difference)/maxValue}; --color: green;`
+        positiveDifferenceBar.style = `--size: 0; --color: red;`
+    } else {
+        positiveDifferenceBar.style = `--size: ${2*Math.abs(difference)/maxValue}; --color: red;`
+        negativeDifferenceBar.style = `--size: 0; --color: green;`
+    }
+    differenceString.innerHTML = `Marriage ${difference > 0 ? 'Penalty of ': 'Bonus of '} ${USDollar.format(Math.abs(difference))}`;
+}
+function sliderUpdate() {
+    const totalIncome = parseInt(spouseOneIncome.value) + parseInt(spouseTwoIncome.value);
+    const sliderInt = Math.round(spouseOneIncome.value * 100 / totalIncome);
+    sliderValue.innerHTML = sliderInt;
+    slider.value = sliderInt;
+    oppositeSliderValue.innerHTML = 100 - slider.value;
+}
+
+sliderValue.innerHTML = slider.value;
+oppositeSliderValue.innerHTML = 100 - slider.value;
+totalTaxUpdate();
+slider.oninput = function() {
+    sliderValue.innerHTML = slider.value;
+    oppositeSliderValue.innerHTML = 100 - slider.value;
+    const total = parseInt(spouseOneIncome.value) + parseInt(spouseTwoIncome.value);
+    const division = parseInt(slider.value);
+    spouseOneIncome.value = Math.round(total * division/ 100);
+    spouseTwoIncome.value = Math.round(total * (100 - division) / 100);
+    totalTaxUpdate();
+}
+spouseOneIncome.oninput = function() {
+    totalTaxUpdate();
+    sliderUpdate();
+}
+spouseTwoIncome.oninput = function() {
+    totalTaxUpdate();
+    sliderUpdate();
+}
+numberInput.oninput = function() {
+    totalTaxUpdate();
+    sliderUpdate();
+}
+
+</script>
+</div>
+</div>
+(I wrote the whole preamble really because I wanted to build this UI.) For many, you may get a marriage bonus. For some people including myself, marriage results in a penalty. The laws and emotional implication of marriage are up to personal interpretation: some find them favorable, some may not. However, unless you are eager to donate extra money to the government, paying more taxes is a negative proposition. One day, the value of marriage rights may end up being more than the "cost" of divorce rights and taxes. Perhaps the taxes turn into a bonus. Or maybe I'll feel secure about my relationship and want to address it with a marriage certificate. But for now, I have concluded that I am happy without a marriage.
